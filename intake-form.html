@@ -1,39 +1,827 @@
+<!DOCTYPE html5>
 <html>
 <head>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+  <script src="scripts/conditionalize.min.js"></script>
+  <style>
+    .navbar {
+      background-color: #f8f8f8;
+      height: 70px;
+    }
+    .navbar .container .form-group {
+      margin-top: 15px
+    }
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    .container.main {
+      margin-top: 50px;
+    }
+    .form-text p {
+      font-size: 1.1em;
+      color: #333;
+      max-width: 80%;
+    }
+    .bs-example:before {
+      content: "Example";
+      font-weight: bold;
+      color: #bbb;
+      text-transform: uppercase;
+      letter-spacing: .3em;
+    }
+    pre code {
+        white-space: pre-wrap;       /* Since CSS 2.1 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: keep-all;       /* Internet Explorer 5.5+ */
+    }
+    input.input-1 {
+      width: 1em;
+    }
+    input.input-2 {
+      width: 2em;
+    }
+    input.input-3 {
+      width: 3em;
+    }
+    input.input-4 {
+      width: 4em;
+    }
+    input.input-5,
+    input.input-date {
+      width: 5em;
+    }
+    input.input-6 {
+      width: 6em;
+    }
+    input.input-7 {
+      width: 7em;
+    }
+    input.input-8 {
+      width: 8em;
+    }
+    input.input-9 {
+      width: 9em;
+    }
+    input.input-10 {
+      width: 10em;
+    }
+    input.input-15 {
+      width: 15em;
+    }
+    input.input-20 {
+      width: 20em;
+    }
+    input.input-25 {
+      width: 25em;
+    }
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    fieldset fieldset legend {
+      font-size: 1.3em
+    }
+
+    fieldset fieldset fieldset > legend {
+      margin-left: 1em;
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
 <body>
-<form name="contact" method="POST" data-netlify="true">
-  <p>
-    <label>Your Name: <input type="text" name="name" /></label>
-  </p>
-  <p>
-    <label>Your Email: <input type="email" name="email" /></label>
-  </p>
-  <p>
-    <label>Your perspnal pronounds: <select name="pronouns[]" multiple>
-      <option value="he/him/his">he/him/his</option>
-      <option value="she/her/hers">she/her/hers</option>
-      <option value="they/them/theirs">they/them/theirs</option>
-      <option value="others">others (define below)</option>
-    </select></label>
-  </p>
-  <p>
-    <label>Your custom pronounds: <input type="text" name="alt_pronouns" /></label>
-  </p>
-  <p>
-    <label>Address: <textarea name="address"></textarea></label>
-  </p>
-  <p>
-    <button type="submit">Send</button>
-  </p>
-</form>
-</body>
+  <div class="navbar navbar-fixed-top">
+    <div class="container">
+      <h1 class="col-sm-6">Agency Documents Intake</h1>
+      <div class="form-group">
+        <div class="col-sm-1 top-buttons">
+          <button id="save" type="submit" class="btn btn-success">Save</button>
+        </div>
+        <div class="offsetcol-sm-1">
+          <button id="download" type="submit" class="btn btn-primary">Download saved data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container main">
+    <div class="alert"></div>
+    <form name="intake_agency_documents" id="intake_agency_documents" method="POST" data-netlify="true" class="form-horizontal">
+        <div class="form-group">
+          <div class="offset-4 col-sm-10">
+            <button id="restore" type="submit" class="btn btn-warning">Restore from previous visit</button>
+          </div>
+        </div>
+        <fieldset id="client_info">
+          <legend>Your Info</legend>
+<!-- CLIENT INFO BASICS -->
+          <div class="form-group">
+            <label for="client_email" class="col-sm-2 control-label">Your email address</label>
+            <div class="col-sm-3">
+              <input id="client_email" name="client_email" type="text" required="required" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_name_first" class="col-sm-2 control-label">Your first name</label>
+            <div class="col-sm-3">
+              <input id="client_name_first" name="client_name_first" type="text" required="required" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_name_last" class="col-sm-2 control-label">Your last name</label>
+            <div class="col-sm-3">
+              <input id="client_name_last" name="client_name_last" type="text" class="form-control" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_name_legal" class="col-sm-2 control-label">Your full legal name</label>
+            <div class="col-sm-4">
+              <input id="client_name_legal" name="client_name_legal" type="text" required="required" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_aliases" class="col-sm-2 control-label">Any other names you use</label>
+            <div class="col-sm-5">
+              <input id="client_aliases" name="client_aliases" type="text" class="form-control" aria-describedby="client_aliasesHelpBlock">
+              <div id="client_aliasesHelpBlock" class="form-text text-muted"><p>Separate all names with commas</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_pronouns" class="col-sm-2 control-label">Your personal pronouns</label>
+            <div class="col-sm-10">
+              <select id="client_pronouns" name="client_pronouns" class="custom-select">
+                <option value="he/him/his">he/him/his</option>
+                <option value="she/her/her">she/her/her</option>
+                <option value="they/them/their">they/them/their</option>
+                <option value="other (defined below)">other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_pronouns_alt" class="col-sm-2 control-label">Your custom pronouns</label>
+            <div class="col-sm-10">
+              <input id="client_pronouns_alt" name="client_pronouns_alt" type="text" aria-describedby="client_pronouns_altHelpBlock" class="form-control input-4">
+              <div id="client_pronouns_altHelpBlock" class="form-text text-muted"><p>If you chose "other" above. Format like <code>they/them/their</code></p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_dob" class="col-sm-2 control-label">Your date of birth</label>
+            <div id="client_dobHelpBlock" class="form-text text-muted col-sm-10">
+              <input id="client_dob" name="client_dob" type="text" aria-describedby="client_dobHelpBlock" required="required" class="form-control input-date">
+              <p>Format as <code>MM/DD/YYYY</code> or <code>YYYY-MM-DD</code>, example: <code>2/15/1960</code></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_birth_place" class="col-sm-2 control-label">Your place of birth</label>
+            <div class="col-sm-10">
+              <input id="client_birth_place" name="client_birth_place" type="text" class="form-control input-20" aria-describedby="client_birth_placeHelpBlock" required="required">
+              <div id="client_birth_placeHelpBlock" class="form-text text-muted"><p>The city, state/province, country where you were born, formatted as city, full state name, full country name</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_ssn" class="col-sm-2 control-label">Your Social Security number</label>
+            <div class="col-sm-10">
+              <input id="client_ssn" name="client_ssn"  type="text" class="form-control input-10" aria-describedby="client_ssnHelpBlock">
+            </div>
+            <div id="client_ssnHelpBlock" class="form-text text-muted col-sm-8"><p>Format as <code>000-00-0000</code></p></div>
+          </div>
+
+<!-- CLIENT ADDRESS -->
+          <div class="form-group">
+            <label for="client_address_street" class="col-sm-2 control-label">Street</label>
+            <div class="col-sm-3">
+              <input id="client_address_street" name="client_address_street" type="text" class="form-control" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_address_city" class="col-sm-2 control-label">City</label>
+            <div class="col-sm-3">
+              <input id="client_address_city" name="client_address_city" type="text" class="form-control" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_address_state" class="col-sm-2 control-label">State or province</label>
+            <div class="col-sm-3">
+              <input id="client_address_state" name="client_address_state" type="text" class="form-control" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_address_country" class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-3">
+              <input id="client_address_country" name="client_address_country" type="text" class="form-control" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_address_zip" class="col-sm-2 control-label">Zip or postal code</label>
+            <div class="col-sm-2">
+              <input id="client_address_zip" name="client_address_zip" type="text" class="form-control" required="required">
+            </div>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset id="affidavit-of-family-tree">
+        <legend>Your Affidavit of Family Tree</legend>
+      <fieldset>
+        <legend>Your partners and descendants</legend>
+
+<!-- CLIENT'S MARRIAGES -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Your spouses and coparents</label>
+            <div class="col-sm-10" for="spouses">
+              <div id="spousesHelpBlock" class="form-text text-muted"><p>Anyone you ever married <em>or</em> had a child with. One person per line, formatted as <code>Legal Name; label; date/of/wedding; date/of/divorce; pronoun or special/pronoun/sets</code>, most recent to earliest. If you never married, include no dates.
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Mary Roberts; wife; 05/22/2022; she
+Holly Jones; ex-wife; 2014-09-05; 2018-02-22; she
+Janet Greene; mother of Lester and Frannie; she</code></pre>
+                </div>
+              </div>
+              <textarea id="spouses" name="spouses" type="text" aria-describedby="spousesHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Your children</label>
+            <div class="col-sm-10" for="children">
+              <div id="childrenHelpBlock" class="form-text text-muted"><p>One child per line, formatted as <code>Child Name; relation; date/of/birth; otherparent; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <textarea readonly>Sady Jones-Smith; daughter; 2013-05-20; hollyjones; mother; she
+Gary Jones-Smith; son; 10/31/2017; hollyjones; mother; he
+Lester Greene; son; 2010-02-04; janetgreene; he
+Francesca Greene; daughter; 2008-09-19; janetgreene; she</textarea>
+                  <pre><code>Sady Jones-Smith; daughter; 2013-05-20; hollyjones; mother; she
+Gary Jones-Smith; son; 10/31/2017; hollyjones; mother; he
+Lester Greene; son; 2010-02-04; janetgreene; he
+Francesca Greene; daughter; 2008-09-19; janetgreene; she</code></pre>
+                </div>
+              </div>
+              <textarea id="spouses" name="children" type="text" aria-describedby="childrenHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Your grandchildren</label>
+            <div class="col-sm-10" for="grandchildren">
+              <div id="grandchildrenHelpBlock" class="form-text text-muted"><p>One grandchild per line, formatted as <code>Child Name; relation; date/of/birth; parent; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Nora Jones-Smith-Roth; grandkid; 06/27/2010; zhe/zhir/zhirs</code></pre>
+                </div>
+              </div>
+              <textarea id="spouses" name="grandchildren" type="text" aria-describedby="grandchildrenHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+
+        </fieldset>
+        <fieldset>
+          <legend>Your parents</legend>
+        <fieldset>
+          <legend>First parent</legend>
+
+<!-- FIRST PARENT -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_name">First parent's name</label>
+            <div class="col-sm-10">
+              <input id="parent_1_name" name="parent_1_name" type="text" aria-describedby="parent_1_nameHelpBlock" required="required" class="form-control input-15">
+              <div id="parent_1_nameHelpBlock" class="form-text text-muted"><p>Your birth mother's or other first parent's name, their maiden or previous name if applicable, and their date of death if they have passed</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_rel">First parent's relationship to you</label>
+            <div class="col-sm-10">
+              <input id="parent_1_rel" name="parent_1_rel" type="text" aria-describedby="parent_1_relHelpBlock" required="required" class="form-control input-10">
+              <div id="parent_1_relHelpBlock" class="form-text text-muted"><p>Probably <code>mother</code></p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_name_prev">First parent's previous name</label>
+            <div class="col-sm-10">
+              <input id="parent_1_name_prev" name="parent_1_name_prev" type="text" aria-describedby="parent_1_name_prevHelpBlock" required="required" class="form-control input-15">
+              <div id="parent_1_name_prevHelpBlock" class="form-text text-muted"><p>Your birth mother's or other first parent's maiden or previous name, if applicable</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_death">First parent's date of death</label>
+            <div class="col-sm-10">
+              <input id="parent_1_name_prev" name="parent_1_death" type="text" aria-describedby="parent_1_deathHelpBlock" required="required" class="form-control input-date">
+              <div id="parent_1_deathHelpBlock" class="form-text text-muted"><p>Your birth mother's or other first parent's date of death, if they have passed</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_cousins">Your first parent's first cousins</label>
+            <div class="col-sm-10">
+              <div id="parent_1_cousinsHelpBlock" class="form-text text-muted"><p>Your first parent's cousins by the same parents. One per line, formatted as <code>Cousin Name; date/of/birth; side; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Rudy Bottoms; 1975-04-30; paternal
+Wiley Wilkins; 1981-03-24; paternal
+Sharla Stonk; 04/14/1977; maternal</code></pre>
+                </div>
+              </div>
+              <textarea id="parent_1_cousins" name="parent_1_cousins" type="text" aria-describedby="parent_1_cousinsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_1_second_cousins">Your first parent's second cousins</label>
+            <div class="col-sm-10">
+              <div id="niblingsHelpBlock" class="form-text text-muted"><p>Your first parent's first cousins' children, formatted as <code>Full Name; parentname; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Georgia Bottoms; 1990-07-21; rudybottoms
+Charli Bottoms, 09/08/1993; rudybottoms
+Sterling Stonk; 08/02/2006; sharlastonk</code></pre>
+                </div>
+              </div>
+              <textarea id="niblings" name="niblings" type="text" aria-describedby="niblingsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Your first parent's other marriages</label>
+            <div class="col-sm-10" for="parent_1_spouses">
+              <div id="parent_1_spousesHelpBlock" class="form-text text-muted"><p>One spouse per line, formatted as <code>Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set</code>, most recent to earliest, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Darla Santana; wife; divorce: 2015-03-25; she
+William Jessup; late husband; death: 04/22/2008; he</code></pre>
+                </div>
+              </div>
+              <textarea id="parent_1_spouses" name="parent_1_spouses" type="text" aria-describedby="parent_1_spousesHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Second parent</legend>
+
+<!-- SECOND PARENT -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_2_name">Second parent's name</label>
+            <div class="col-sm-10">
+              <input id="parent_2_name" name="parent_2_name" type="text" aria-describedby="parent_2_nameHelpBlock" required="required" class="form-control">
+              <div id="parent_2_nameHelpBlock" class="form-text text-muted"><p>Your birth mother's or other Second parent's name, their maiden or previous name if applicable, and their date of death if they have passed</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_2_rel">Second parent's relationship to you</label>
+            <div class="col-sm-10">
+              <input id="parent_2_rel" name="parent_2_rel" type="text" aria-describedby="parent_2_relHelpBlock" required="required" class="form-control">
+              <div id="parent_2_relHelpBlock" class="form-text text-muted"><p>Probably <code>father</code></p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_2_name_prev">Second parent's previous name</label>
+            <div class="col-sm-10">
+              <input id="parent_2_name_prev" name="parent_2_name_prev" type="text" aria-describedby="parent_2_name_prevHelpBlock" required="required" class="form-control">
+              <div id="parent_2_name_prevHelpBlock" class="form-text text-muted"><p>Your birth mother's or other Second parent's maiden or previous name, if applicable</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="parent_2_death">Second parent's date of death</label>
+            <div class="col-sm-10">
+              <input id="parent_2_name_prev" name="parent_2_death" type="text" aria-describedby="parent_2_deathHelpBlock" required="required" class="form-control">
+              <div id="parent_2_deathHelpBlock" class="form-text text-muted"><p>Your birth father or other second parent's date of death, if they have passed</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Your second parent's other marriages</label>
+            <div class="col-sm-10" for="parent_2_spouses">
+              <div id="parent_2_spousesHelpBlock" class="form-text text-muted"><p>One spouse per line, formatted as <code>Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set</code>, most recent to earliest, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Rhonda Rudolf; current wife; 2016-03-05; she
+Mable Worcester; ex-wife; 04/22/1978; 09/20/2017; she</code></pre>
+                </div>
+              </div>
+              <textarea id="parent_2_spouses" name="parent_2_spouses" type="text" aria-describedby="parent_2_spousesHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+<!-- SIBLINGS -->
+        </fieldset>
+        </fieldset>
+        <fieldset>
+          <legend>Your siblings</legend>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="siblings">Your full siblings' info</label>
+            <div class="col-sm-10">
+              <div id="siblingsHelpBlock" class="form-text text-muted"><p>Your <strong>siblings by the same parents</strong>. One per line, formatted as <code>Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Janet Smith; sister; 1979-04-30; they
+Wilson Smith; brother, 1981-12-31</code></pre>
+                </div>
+              </div>
+              <textarea id="siblings" name="siblings" type="text" aria-describedby="siblingsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="niblings">Your niblings' info</label>
+            <div class="col-sm-10">
+              <div id="niblingsHelpBlock" class="form-text text-muted"><p>Your siblings' children. One per line, formatted as <code>Nibling Name; relation to you; relation to your sibling; parentname</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Greg Smith-Philips; nephew; son; janetsmith
+Rory Smith-Philips, neice; daughter; janetsmith
+Stan Smith; nephew; son; wilsonsmith</code></pre>
+                </div>
+              </div>
+              <textarea id="niblings" name="niblings" type="text" aria-describedby="niblingsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+<!-- half and step siblings -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="half_siblings">Your half- and step-siblings' info</label>
+            <div class="col-sm-10">
+              <div id="half_siblingsHelpBlock" class="form-text text-muted"><p>Your step or half siblings from either parent's other marriages. One per line, formatted as <code>Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Mary Beth Mandel; step sister; 1992-01-03; she
+Wilson Smith; half brother, 2019-5-23; he</code></pre>
+                </div>
+              </div>
+              <textarea id="half_siblings" name="half_siblings" type="text" aria-describedby="half_siblingsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+<!-- Half niblings -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="more_niblings">MORE niblings' info</label>
+            <div class="col-sm-10">
+              <div id="more_niblingsHelpBlock" class="form-text text-muted"><p>Your <strong>half or step siblings'</strong> children. One per line, formatted as <code>Nibling Name; relation to you; relation to your step or half sibling; parentname</code>, like so:
+                <div class="bs-example" data-example-id="simple-pre">
+                  <pre><code>Josh Mandel; step nephew; son; cindymandel
+Hope Mandel, step neice; daughter; cindymandel</code></pre>
+                </div>
+              </div>
+              <textarea id="more_niblings" name="more_niblings" type="text" aria-describedby="more_niblingsHelpBlock" required="required" class="form-control"></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset>
+        <legend>Agents and recipients not yet listed</legend>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="others_agents">Unlisted agents</label>
+          <div class="col-sm-10">
+            <div id="others_agentsHelpBlock" class="form-text text-muted"><p>People who will serve as agents who are not already listed, formatted as <code>Agent Name; relation; phone-number; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set</code>, like so:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>Winky Kennedy; dear friend; 917-222-3333; winky@geocities.com; 10 Prospect Pl Apt 5, Brooklyn, New York; she
+Sherry Coen; business partner; 347-897-3344 or 202-338-3335 ext 45; scoen2012@imac.com; 87 Stanton Rd, Salisbury, Connecticut; they
+Phyllis Walton; longtime lover; 315-908-3344; phylisw@nowheregood.com; 2033 Cordial Blvd, White Plains, New York; she</code></pre>
+                </div>
+            </div>
+            <textarea id="others_agents" name="others_agents" type="text" aria-describedby="others_agentsHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="others_recipients">Unlisted recipients</label>
+          <div class="col-sm-10">
+            <div id="others_recipientsHelpBlock" class="form-text text-muted"><p>People (or organizations) to whom you will bequeath something but are not already listed, formatted as <code>Recipient Name; relation; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set</code>, like so:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>Seamus Smith; paternal grandfather; no email; c/o Whispy Gardens, 55 Creaky Plaza, Old Towne, NV 89893; he
+Samuel Dilbert; former step-son by Mary Roberts; no email; Prisoner 48099 c/o DOC San Quentin, CA; he
+South Street Food Pantry; volunteer gig; info@southstreetpantry.org; 10 South St, Brooklyn, NY 10344</code></pre>
+                </div>
+            </div>
+            <textarea id="others_recipients" name="others_recipients" type="text" aria-describedby="others_recipientsHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Your Living Will Specifics</legend>
+        <div class="form-group">
+          <label class="col-sm-2">Withheld and Withdrawn</label>
+          <div class="col-sm-10">
+            <div id="lw_withhold_proeceduresHelpBlock" class="form-text text-muted"><p>The <strong>procedures and treatments you will wish to have withheld or withdrawn</strong></p></div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="surgery">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">surgery</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="antibiotics">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">antibiotics</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_1" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="cardiac and pulmonary resuscitation">
+              <label for="lw_withhold_proecedures_1" class="custom-control-label">cardiac and pulmonary resuscitation</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_2" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="respiratory support">
+              <label for="lw_withhold_proecedures_2" class="custom-control-label">respiratory support</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="blood and blood products">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">blood and blood products</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="chemotherapy">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">chemotherapy</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="invasive diagnostic tests">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">invasive diagnostic tests</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="artificial nutrition">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">artificial nutrition</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="artificial hydration">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">artificial hydration</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_withhold_proecedures" id="lw_withhold_proecedures_0" type="checkbox" aria-describedby="lw_withhold_proeceduresHelpBlock" class="custom-control-input" value="artificial respiration">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">artificial respiration</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Withholding conditions and notes</label>
+          <div class="col-sm-10" for="lw_withhold_notes">
+            <div id="lw_withhold_notesHelpBlock" class="form-text text-muted"><p>Any special conditions or qualifications for treatments and procedures to be withheld, such as...
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>I wish for these procedures and treatments ONLY in the event that their temporary administration will facilitate my return to a state in which they are no longer necessary.
+
+I do not want them if their administration will serve only to prolong the process of my dying.</code></pre>
+                </div>
+            </div>
+            <textarea id="lw_withhold_notes" name="lw_withhold_notes" type="text" aria-describedby="lw_withhold_notesHelpBlock" required="required" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2">DO Perform</label>
+          <div class="col-sm-10">
+            <div id="lw_doperformHelpBlock" class="form-text text-muted"><p>Any <strong>procedures and treatments you will wish to ensure are performed</strong></p></div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_doperform" id="lw_doperform" type="checkbox" aria-describedby="lw_doperformHelpBlock" class="custom-control-input" value="I DO want maximum pain relief, even if it may hasten my death.">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">I <strong>DO</strong> want maximum pain relief, even if it may hasten my death.</label>
+            </div>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="lw_doperform" id="lw_doperform" type="checkbox" aria-describedby="lw_doperformHelpBlock" class="custom-control-input" value="I DO wish to spend this time in hospice care rather than a hospital.">
+              <label for="lw_withhold_proecedures_0" class="custom-control-label">I <strong>DO</strong> wish to spend this time in hospice care rather than a hospital.</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Other notes about your wishes</label>
+          <div class="col-sm-10" for="lw_other_notes">
+            <div id="lw_other_notesHelpBlock" class="form-text text-muted"><p>Any special notes regarding the treatment of your condition when you are unable to carry it out yourself.</div>
+            <textarea id="lw_other_notes" name="lw_other_notes" type="text" aria-describedby="lw_other_notesHelpBlock" required="required" class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="poa_agent_primary">Power of attorney, primary agent</label>
+          <div class="col-sm-10">
+            <input id="poa_agent_primary" name="poa_agent_primary" type="text" aria-describedby="poa_agent_primaryHelpBlock" required="required" class="form-control">
+            <div id="poa_agent_primaryHelpBlock" class="form-text text-muted"><p>The ID of your <strong>primary agent</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="poa_agent_secondary">Power of attorney, secondary agent</label>
+          <div class="col-sm-10">
+            <input id="poa_agent_secondary" name="poa_agent_secondary" type="text" aria-describedby="poa_agent_secondaryHelpBlock" required="required" class="form-control">
+            <div id="poa_agent_secondaryHelpBlock" class="form-text text-muted"><p>The ID of your <strong>secondary agent</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="hcp_agents">Healthcare proxy agents</label>
+          <div class="col-sm-10">
+            <div id="hcp_agentsHelpBlock" class="form-text text-muted"><p>People who will serve as healthcare proxy <strong>agents</strong>, plus their phone number and home and email addresses if not entered above, formatted as <code>agentname; phone-number; email@address.com; Full Street Address, with commas, on one line; pronoun or special/pronoun/set</code>, like so:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>maryroberts; 917-404-5954; maryr@ourserver.com; 12 Our St, Brooklyn, NY 10344
+winkykennedy</code></pre>
+                </div>
+            </div>
+            <textarea id="hcp_agents" name="hcp_agents" type="text" aria-describedby="hcp_agentsHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="hcp_informed">Healthcare informed individuals</label>
+          <div class="col-sm-10">
+            <div id="hcp_informedHelpBlock" class="form-text text-muted"><p>Additional people you authorize to speak to your doctors or access your medical records, plus their home address if not entered above, formatted as <code>fulltname; Full Street Address</code>, like so:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>hollyjones; 967 St Judas Pl, Brooklyn, NY 10344
+sadyjonesmith; 967 St Judas Pl, Brooklyn, NY 10344</code></pre>
+                </div>
+            </div>
+            <textarea id="hcp_informed" name="hcp_informed" type="text" aria-describedby="hcp_informedHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="lwat_estate_recipients">Estate portioning</label>
+          <div class="col-sm-10">
+            <div id="lwat_estate_recipientsHelpBlock" class="form-text text-muted"><p>Anyone you wish to leave a portion of your estate to, formatted as <code>fulltname; N%; any notes you wish to add</code>, like so:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>maryroberts; 50%
+Sadyjonessmith; 10%
+garyjonessmith; 10%
+lstergreene; 10%
+francescagreene; 10%
+southstreetfoodpantry; 10%</code></pre>
+                </div>
+            </div>
+            <textarea id="lwat_estate_recipients" name="lwat_estate_recipients" type="text" aria-describedby="lwat_estate_recipientsHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="lwat_personality_distribution">Personality (possessions) distribution</label>
+          <div class="col-sm-10">
+            <div id="lwat_personality_distributionHelpBlock" class="form-text text-muted"><p>Think about any special items you would like to give to people. This would include things like your clothes, jewelry, books, pictures, vehicles, musical instruments, or art. People often give special things to individual people, and then provide in their will that the remainder of their stuff (in legalese, their personalty) should be picked over by friends, and that anything remaining shall be sold or should be given to Housing Works or Good Will. The operative language here looks like:
+              <div class="bs-example" data-example-id="simple-pre">
+                <pre><code>The photo albums to my brother, should he survive me, and should he not survive me, to the Metropolitan Museum of Art. All items remaining after specific distributions are to be divided equally among my surviving relatives as they shall so decide, and if they cannot decide, as my executor shall decide for them. Anything remaining shall be donated to Housing Works.</code></pre>
+                </div>
+            </div>
+            <textarea id="lwat_personality_distribution" name="lwat_personality_distribution" type="text" aria-describedby="lwat_personality_distributionHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group form-text text-muted">
+          <p>Because you can also put your assets into trusts using the language of your will, you will have to identify a primary and a successor Trustee who will manage any assets placed in trust for a beneficiary.</p>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="trustee_primary">Primary trustee</label>
+          <div class="col-sm-10">
+            <input id="trustee_primary" name="trustee_primary" type="text" aria-describedby="trustee_primaryHelpBlock" required="required" class="form-control">
+            <div id="trustee_primaryHelpBlock" class="form-text text-muted"><p>The ID of your <strong>primary trustee</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="trustee_secondary">Successor trustee</label>
+          <div class="col-sm-10">
+            <input id="trustee_secondary" name="trustee_secondary" type="text" aria-describedby="trustee_secondaryHelpBlock" required="required" class="form-control">
+            <div id="trustee_secondaryHelpBlock" class="form-text text-muted"><p>The ID of your <strong>successor trustee</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="guardianship_orders">Guardianship wishes</label>
+          <div class="col-sm-10">
+            <div id="guardianship_ordersHelpBlock" class="form-text text-muted"><p>The names and addresses of three people or couples you wish to act as guardian. You can say, for example, that you wish for a sibling and their spouse to act as guardian, but that in the event they are no longer married, you wish only the sibling to act as guardian. You can say that if the children are under a certain age, you wish for one set of people (i.e.: grandparents), but if they are older, you would like a different set of people (i.e. younger people).
+            </div>
+            <textarea id="guardianship_orders" name="guardianship_orders" type="text" aria-describedby="guardianship_ordersHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2">Organ donation</label>
+          <div class="col-sm-10">
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input name="organ_donation" id="organ_donation_0" type="checkbox" aria-describedby="organ_donationHelpBlock" class="custom-control-input" value="donate-organs">
+              <label for="organ_donation_0" class="custom-control-label">I wish for your skin and other organs to be used for organ donation, medical education, or medical research</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="remains_agent_primary">Primary remains agent</label>
+          <div class="col-sm-10">
+            <input id="remains_agent_primary" name="remains_agent_primary" type="text" aria-describedby="remains_agent_primaryHelpBlock" required="required" class="form-control">
+            <div id="remains_agent_primaryHelpBlock" class="form-text text-muted"><p>The ID of the person you wish to <strong>claim and handle your remains</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="remains_agent_secondary">Successor remains agent</label>
+          <div class="col-sm-10">
+            <input id="remains_agent_secondary" name="remains_agent_secondary" type="text" aria-describedby="remains_agent_secondaryHelpBlock" required="required" class="form-control">
+            <div id="remains_agent_secondaryHelpBlock" class="form-text text-muted"><p>The ID of the person you wish to claim and handle your remains <strong>in the event your primary designee is unavailable</strong>, plus their email and home addresses if not registered above, in the form of <code>fullname; email@address.com; Full Street Address</code>.</p></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="rites_wishes">Funeral rites/wishes</label>
+          <div class="col-sm-10">
+            <div id="rites_wishesHelpBlock" class="form-text text-muted"><p>
+              Describe any wishes you want to convey to those responsible for your remains. Include anyone you wish to <strong>exclude</strong> from managing these rites or attending events.
+            </div>
+            <textarea id="rites_wishes" name="rites_wishes" type="text" aria-describedby="rites_wishesHelpBlock" required="optional" class="form-control"></textarea>
+          </div>
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        <div class="offset-4 col-sm-10">
+          <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  </body>
+
+  <script type="text/javascript">
+
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+
+  (function () {
+  'use strict';
+      var keyField = getParameterByName('key');
+      var firstNameField = getParameterByName('first');
+      var lastNameField = getParameterByName('last');
+      var emailField = getParameterByName('email');
+      if (keyField !== '')
+          document.querySelector('#form_key').value = keyField;
+      if (firstNameField !== '')
+          document.querySelector('#client_name_first').value = firstNameField;
+      if (lastNameField !== '')
+          document.querySelector('#client_name_last').value = lastNameField;
+      if (emailField !== '')
+          document.querySelector('#client_email').value = emailField;
+  })();
+
+  /*
+  This script is
+
+  Based on Christian Nwamba's Save For Later feature instructional:
+  https://www.telerik.com/blogs/details/save-for-later-feature-in-forms-using-localstorage
+  */
+  const formId = "intake_agency_documents"; // ID of the form
+  const url = location.href; //  href for the page
+  const formIdentifier = `${url} ${formId}`; // Identifier used to identify the form
+  const saveButton = document.querySelector("#save"); // select save button
+  const restoreButton = document.querySelector("#restore");
+  const downloadButton = document.querySelector("#download");
+  const alertBox = document.querySelector(".alert"); // select alert display div
+  const downloadFilename = "intake-data.json";
+  let form = document.querySelector(`#${formId}`); // select form
+  let formElements = form.elements; // get the elements in the form
+
+  /**
+   * This function gets the values in the form
+   * and returns them as an object with the
+   * [formIdentifier] as the object key
+   * @returns {Object}
+   */
+  const getFormData = () => {
+    let data = { [formIdentifier]: {} };
+    for (const element of formElements) {
+      if (element.name.length > 0) {
+        data[formIdentifier][element.name] = element.value;
+      }
+    }
+    return data;
+  };
+
+  saveButton.onclick = event => {
+    event.preventDefault();
+    data = getFormData();
+    localStorage.setItem(formIdentifier, JSON.stringify(data[formIdentifier]));
+    const message = "Form draft has been saved!";
+    displayAlert(message);
+  };
+
+  restoreButton.onclick = event => {
+    populateForm()
+  }
+
+  downloadButton.onclick = event => {
+    getLocalstorageToFile(downloadFilename)
+  }
+
+  /**
+   * This function displays a message
+   * on the page for 1 second
+   *
+   * @param {String} message
+   */
+  const displayAlert = message => {
+    alertBox.innerText = message;
+    alertBox.style.display = "block";
+    setTimeout(function() {
+      alertBox.style.display = "none";
+    }, 1000);
+  };
+
+  /**
+   * This function populates the form
+   * with data from localStorage
+   */
+  const populateForm = () => {
+    if (localStorage.key(formIdentifier)) {
+      const savedData = JSON.parse(localStorage.getItem(formIdentifier)); // get and parse the saved data from localStorage
+      for (const element of formElements) {
+        if (element.name in savedData) {
+          element.value = savedData[element.name];
+        }
+      }
+      const message = "Form has been refilled with saved data!";
+      displayAlert(message);
+    }
+  };
+
+  function getLocalstorageToFile(fileName) {
+
+    /* save as blob */
+    var textToSave = JSON.stringify(JSON.parse(localStorage.getItem(formIdentifier)))
+    var textToSaveAsBlob = new Blob([textToSave], {
+      type: "text/plain"
+    });
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+
+    /* download without button hack */
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileName;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = function () {
+      document.body.removeChild(event.target);
+    };
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+  }
+  </script>
 </html>
