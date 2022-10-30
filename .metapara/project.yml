@@ -1,0 +1,49 @@
+name: Agency Documents
+code: adp
+intake:
+  form:
+    name: Agency Planning Intake
+    code: intake
+    source:
+      file: forms/intake-form-config.yml
+    html:
+      path: _build/site/agency-intake
+      file: index.html
+    remote:
+      path: "/"
+      api:
+        form_id: "634612b807bf4000084fbc93"
+        actions:
+          get_submission:
+            path: "forms/{{form_id}}/submissions"
+            method: GET
+          delete_submission:
+            path: submissions/{submission_id}
+            method: DELETE
+          deploy_plan:
+            path: "sites/{{ site_id }}/deploys"
+            method: POST
+          deploy_file:
+            path: "deploys/{{ deploy_id }}/files/{{ file_name }}"
+            method: PUT
+
+collections:
+  - id: agency-docs
+    name: Agency Planning Documents
+    code: apd
+    default: true
+    data: "{{client_path}}/data/intake-data.yml"
+    templates:
+      path: "{{project_path}}/_templates/agency"
+      format: asciidoc
+      parser: liquid
+    docs:
+      - name: Last Will and Testament
+        slug: last-will-and-testament
+        code: will
+      - name: Power of Attorney
+        slug: power-of-attorney
+        code: poa
+      - name: Living Will
+        slug: living-Will
+        code: lw
