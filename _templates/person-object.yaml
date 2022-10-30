@@ -1,0 +1,13 @@
+{%- assign rec = include.person %}
+- name: {{ rec.name }}
+  id: {{ rec.id }}
+  type: {{ include.type }}
+  rel: {%-   if rec.rel.client %}{{ rec.rel | to_json | remove: "\n" }}
+  {%- else %}
+    client: {{ rec.rel }}{% endif %}
+{%- if rec.pronouns %}
+  pronouns: {{ rec.pronouns | to_json | remove: "\n" }}
+{%- endif %}
+{%- if rec.address %}
+  address: {{ rec.address }}
+{%- endif %}

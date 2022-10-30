@@ -1,0 +1,10 @@
+- action: parse
+  data: intake-form.yml
+  builds:
+    - template: _templates/intake-data.yaml
+      output: {{var.client}}/intake.yml
+- action: parse
+  data: {{var.client}}/intake.yml
+  builds:
+    - template: _templates/query-people.yaml
+      output: {{var.client}}/people.yml

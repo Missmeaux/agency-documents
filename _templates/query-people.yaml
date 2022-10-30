@@ -1,0 +1,6 @@
+{%- for sib in siblings %}
+{%-   include person-object.yaml person=sib type="sibling" %}
+{%-   for nib in sib.kids %}
+{%-     include person-object.yaml person=nib type="nibling" %}
+{%-   endfor %}
+{%- endfor %}

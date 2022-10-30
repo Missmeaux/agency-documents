@@ -1,0 +1,14 @@
+{%- if include.fieldname contains "_" %}
+  {%- assign fieldname_split = include.fieldname | split: "_" %}
+  {%- case fieldname_split[0] %}
+    {%- when "fieldset" %}
+      {%- assign field_type = "fieldset" %}
+      {%- assign field_name = fieldname_split[1] %}
+    {%- else %}
+      {%- assign field_type = nil %}
+      {%- assign field_name = fieldname_split[1] %}
+  {%- endcase %}
+{%- else %}
+    {%- assign field_type = nil %}
+    {%- assign field_name =  include.field_name %}
+{%- endif %}

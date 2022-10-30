@@ -1,0 +1,568 @@
+title: Agency Planning Documents
+name: intake-agency-documents
+action:
+method: POST
+class: form-horizontal
+data-attributes:
+  - name: data-netlify
+    value: "true"
+defaults:
+  helpspot: after
+  examplespot: after
+  label-col-size: col-sm-2
+  input-col-size: col-sm-10
+  input-text-width: 10
+  input_types:
+    textarea:
+      helpspot: before
+      examplespot: before
+meta:
+  headless: false
+  tailless: false
+intro: |
+  Please fill out this highly secure form in its entirety before submitting.
+  You are encouraged to periodically save the form to your browser's memory.
+  It will last there between sessions and even shutdowns, as long as you do not clear your browser's cache.
+  You can also download a file containing the data, though this is most useful when the form is complete, as a backup for yourself.
+
+layout:
+  navbar:
+    spot: top
+    type: fixed
+
+controls:
+  submit:
+    kind: button
+    action: submit
+    text: Submit Form
+    class: btn-primary
+    spot: form-bottom
+  save:
+    kind: button
+    action: save-to-localStorage
+    text: Save Data for Later
+    class: btn-success
+    spot: navbar-top
+  download:
+    kind: button
+    action: save-from-localStorage
+    text: Download Saved Data
+    class: btn-primary
+    spot: navbar-top
+  restore:
+    kind: button
+    action: restore-from-localStorage
+    text: Restore Saved Version
+    class: btn-warning
+    spot: form-top
+
+fields:
+  fieldset_personal:
+    legend: Your personal info
+    fields:
+      client_email:
+        type: text
+        label: Your email address
+        width: 25
+        rules:
+          maxlength: 80
+          required: true
+      client_name_first:
+        type: text
+        label: Your first name
+        rules:
+          required: true
+      client_name_last:
+        type: text
+        label: Your last name
+        rules:
+          required: true
+      client_name_legal:
+        type: text
+        label: Your full legal name
+        help: Including middle name
+        width: 25
+        rules:
+          required: true
+      client_aliases:
+        label: Any other names you use
+        type: text
+        help: Separate all names with commas
+      client_pronouns:
+        type: select
+        label: Your pronouns
+        options:
+          - text: ""
+            value: ""
+          - text: he/him/his
+            value: he/him/his
+          - text: she/her/her
+            value: she/her/her
+          - text: they/them/their
+            value: they/them/their
+          - text: other
+            value: other
+      client_pronouns_alt:
+        label: Your custom pronouns
+        type: text
+        help: If you chose "other" above. Format like `they/them/their`
+      client_dob:
+        label: Your date of birth
+        type: text
+        width: date
+        rules:
+          required: true
+          minlength: 9
+          date: true
+        help: |
+          All dates in this form can be formatted as `m/d/yyyy` or `yyyy-mm-dd`, examples: `2/15/1960` or `1960-02-15`.
+      client_birth_place:
+        label: Your place of birth
+        type: text
+        rules:
+          required: true
+          minlength: 20
+        help: The city, state/province, country where you were born, formatted as city, full state name, full country name
+      client_ssn:
+        label: Your Social Security number
+        rules:
+          required: true
+      client_address_street:
+        label: Street
+        type: text
+        width: 25
+        rules:
+          required: true
+      client_address_city:
+        label: City
+        type: text
+        width: 20
+        rules:
+          required: true
+      client_address_state:
+        label: State or province
+        type: text
+        width: 20
+        rules:
+          required: true
+      client_address_zip:
+        label: Zip or postal code
+        type: text
+        width: 10
+        rules:
+          required: true
+
+  fieldset_family:
+    legend: Your Affidavit of Family Tree
+    fields:
+
+      fieldset_nuclear:
+        legend: Your partners and descendants
+        fields:
+          spouses:
+            type: textarea
+            label: Spouses and coparents
+            help: |
+              Anyone you ever married _or_ had a child with. One person per line, formatted as `Legal Name; label; date/of/wedding; date/of/divorce; pronoun or special/pronoun/sets`, most recent to earliest. If you never married, include no dates.
+            example: |
+              Mary Roberts; wife; 5/22/2022; she
+              Holly Jones; ex-wife; 9/5/2014; 2/22/2018; she
+              Janet Greene; mother of Lester and Frannie; she
+          children:
+            label: Your children
+            help: |
+              One child per line, formatted as `Child Name; relation; date/of/birth; otherparent; pronoun or special/pronoun/set`.
+            example: |
+              Sady Jones-Smith; daughter; 5/20/2013; hollyjones; mother; she
+              Gary Jones-Smith; son; 10/31/2017; hollyjones; mother; he
+              Lester Greene; son; 2/4/2010; janetgreene; he
+              Francesca Greene; daughter; 9/19/2008; janetgreene; she
+            type: textarea
+          grandchildren:
+            label: Your grandchildren
+            help: |
+              One grandchild per line, formatted as `Child Name; relation; date/of/birth; parentfullname; pronoun or special/pronoun/set`.
+            example: |
+              Nora Jones-Smith-Roth; grandkid; 6/27/2010; sadyjonessmith; zhe/zhir/zhirs
+            type: textarea
+
+      fieldset_parents:
+        legend: Your parents
+        fields:
+          parents_divorce:
+            type: text
+            label: Your parents' divorce date
+            width: date
+            help: If applicable, the date your parents officially divorced, as `m/d/yyyy`
+
+          fieldset_parent1:
+            legend: First parent
+            fields:
+              parent_1_name:
+                type: text
+                label: First parent's name
+                width: 25
+                help: Your birth mother's or other first parent's current full legeal name.
+              parent_1_rel:
+                type: text
+                label: First parent's relationship to you
+                help: Probably `mother`.
+              parent_1_name_prev:
+                type: text
+                label: First parent's previous name
+                help: Your birth mother's or other first parent's maiden or previous name, if applicable
+              parent_1_death:
+                type: text
+                width: date
+                rules:
+                  date: true
+                label: First parent's date of death
+                help: Your birth mother's or other first parent's date of death, if they have passed
+              parent_1_siblings:
+                type: textarea
+                label: Your first parent's siblings
+                help: Your first parent's immediate siblings. One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set`
+                example: |
+                  Saul Greeley; 4/30/1965; he
+                  Fara Madison; 3/24/1967; she
+                  Ray Greeley; 4/14/1977; he
+              parent_1_niblings:
+                type: textarea
+                label: Your first parent's niblings
+                help: Your first parent's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; parentname; pronoun or special/pronoun/set`.
+                example: |
+                  Jenny Greeley; 9/19/1990; saulgreeley
+                  Charlene Madison, 9/8/1993; faramadison
+              parent_1_cousins:
+                type: textarea
+                label: Your first parent's first cousins
+                help: Your first parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
+                example: |
+                  Rudy Bottoms; 4/30/1975; paternal
+                  Wiley Wilkins; 3/24/1981; paternal
+                  Sharla Stonk; 4/14/1977; maternal
+              parent_1_second_cousins:
+                type: textarea
+                label: Your first parent's second cousins
+                help: Your first parent's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
+                example: |
+                  Georgia Bottoms; 7/21/1990; rudybottoms
+                  Charli Bottoms, 9/8/1993; rudybottoms
+              parent_1_spouses:
+                type: textarea
+                label: Your first parent's (other) marriages
+                help: |
+                  One spouse per line, formatted as `Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set`, most recent to earliest.
+                example: |
+                  Darla Santana; wife; divorce: 3/25/2015; she
+                  William Jessup; late husband; death: 4/22/2008; he
+
+          fieldset_parent2:
+            legend: Second parent
+            fields:
+              parent_2_name:
+                label: Second parent's name
+                type: text
+                width: 25
+                help: |
+                  Your birth father's or other Second parent's current legal name
+              parent_2_rel:
+                label: Second parent's relationship to you
+                type: text
+                help: Probably `father`
+              parent_2_name_prev:
+                label: Second parent's previous name
+                type: text
+                help: Your second parent's maiden or previous name, if applicable
+              parent_2_death:
+                label: Second parent's date of death
+                type: text
+                width: date
+                rules:
+                  date: true
+                help: Your birth father or other second parent's date of death, if they have passed
+              parent_2_siblings:
+                type: textarea
+                label: Your second parent's siblings
+                help: Your second parent's immediate siblings. One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set`
+                example: |
+                  Gary Philips; 4/3/1970; he
+                  Roman Philips; 3/28/1971; she
+                  Sarah Philips; 5/14/1975; he
+              parent_2_niblings:
+                type: textarea
+                label: Your second parent's niblings
+                help: Your second parent's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; parentname; pronoun or special/pronoun/set`.
+                example: |
+                  Cora Grant; garpyphilips
+                  Strom Philips, 9/8/1993; faramadison
+              parent_1_cousins:
+                type: textarea
+                label: Your second parent's first cousins
+                help: Your second parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
+                example: |
+                  Rudy Bottoms; 4/30/1975; paternal; she
+                  Wiley Wilkins; 3/24/1981; paternal; he
+                  Sharla Stonk; 4/14/1977; maternal; she
+              parent_1_second_cousins:
+                type: textarea
+                label: Your second parent's second cousins
+                help: Your second parent's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
+                example: |
+                  Georgia Bottoms; 7/21/1990; rudybottoms; she
+                  Charli Bottoms, 9/8/1993; rudybottoms; she
+              parent_2_spouses:
+                label: Your second parent's other marriages
+                help: |
+                  One spouse per line, formatted as `Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set`, most recent to earliest.
+                example: |
+                  Rhonda Rudolf; current wife; 3/5/2016; she
+                  Mable Worcester; ex-wife; 4/22/1978; 9/20/2017; she
+                type: textarea
+
+      fieldset_siblings:
+        legend: Your siblings
+        fields:
+          siblings:
+            label: Your full siblings' info
+            help: |
+              Your *siblings by the same parents*. One per line, formatted as `Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set`.
+            example: |
+              Janet Smith; sister; 4/30/1979; they
+              Wilson Smith; brother, 12/31/1981
+            type: textarea
+          niblings:
+            label: Your niblings' info
+            help: |
+              Your siblings' children. One per line, formatted as `Nibling Name; relation to you; relation to your sibling; parentname`.
+            example: |
+              Greg Smith-Philips; nephew; son; janetsmith
+              Rory Smith-Philips, neice; daughter; janetsmith
+              Stan Smith; nephew; son; wilsonsmith
+            type: textarea
+          half_siblings:
+            label: Your half- and step-siblings' info
+            help: |
+              Your step or half siblings from either parent's other marriages. One per line, formatted as `Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set`.
+            example: |
+              Mary Beth Mandel; step sister; 1/3/1992; she
+              Wilson Smith; half brother, 2019-5-23; he
+            type: textarea
+          more_niblings:
+            label: MORE niblings' info
+            help: |
+              Your *half or step siblings'* children. One per line, formatted as `Nibling Name; relation to you; relation to your step or half sibling; parentname`.
+            example: |
+              Josh Mandel; step nephew; son; cindymandel
+              Hope Mandel, step neice; daughter; cindymandel
+            type: textarea
+
+  fieldset_others:
+    legend: Other individuals not yet listed
+    fields:
+      others_agents:
+        label: Unlisted agents
+        help: |
+          People who will serve as agents who are not already listed, formatted as `Agent Name; relation; phone-number; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set`.
+        example: |
+          Winky Kennedy; dear friend; 917-222-3333; winky@geocities.com; 10 Prospect Pl Apt 5, Brooklyn, New York; she
+          Sherry Coen; business partner; 347-897-3344 or 202-338-3335 ext 45; scoen2012@imac.com; 87 Stanton Rd, Salisbury, Connecticut; they
+          Phyllis Walton; longtime lover; 315-908-3344; phylisw@nowheregood.com; 2033 Cordial Blvd, White Plains, New York; she
+        type: textarea
+      others_recipients:
+        label: Unlisted recipients
+        help: |
+            People (or organizations) to whom you will bequeath something but are not already listed, formatted as `Recipient Name; relation; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set`.
+        example: |
+          Seamus Smith; paternal grandfather; no email; c/o Whispy Gardens, 55 Creaky Plaza, Old Towne, NV 89893; he
+          Samuel Dilbert; former step-son by Mary Roberts; no email; Prisoner 48099 c/o DOC San Quentin, CA; he
+          South Street Food Pantry; volunteer gig; info@southstreetpantry.org; 10 South St, Brooklyn, NY 10344
+        type: textarea
+
+  fieldset_documents:
+    legend: Your document details
+    style: "margin-bottom: 0"
+    fields:
+
+      fieldset_livingwill:
+        legend: Your Living Will specifics
+        fields:
+
+          lw_withhold_proecedures:
+            type: checkboxes
+            label: Withhold and withdraw
+            help: The procedures and treatments you will wish to have withheld or withdrawn
+            helpspot: before
+            options:
+              - surgery
+              - antibiotics
+              - cardiac and pulmonary resuscitation
+              - respiratory support
+              - blood and blood products
+              - chemotherapy
+              - invasive diagnostic tests
+              - artificial nutrition
+              - artificial hydration
+              - artificial respiration
+          lw_withhold_notes:
+            label: Withholding conditions and notes
+            help: |
+                Any special conditions or qualifications for treatments and procedures to be withheld, such as...
+            example: |
+              I wish for these procedures and treatments ONLY in the event that their temporary administration will facilitate my return to a state in which they are no longer necessary.
+
+              I do not want them if their administration will serve only to prolong the process of my dying.
+            type: textarea
+          lw_doperform:
+            label: DO perform
+            type: checkboxes
+            help: Any procedures and treatments you will wish to ensure are performed
+            options:
+              - I *DO* want maximum pain relief, even if it may hasten my death.
+              - I *DO* wish to spend this time in hospice care rather than a hospital.
+              - I *DO* prefer to spend my final days at home.
+            helpspot: before
+          lw_other_notes:
+            label: Other notes about your wishes
+            help: |
+              Any special notes regarding the treatment of your condition when you are unable to carry it out yourself.
+            type: textarea
+
+      fieldset_agents:
+        legend: Healthcare and legal agents
+        fields:
+          hcp_agents:
+            label: Healthcare proxy agents
+            help: |
+              People who will serve as healthcare proxy *agents*, plus their phone number and home and email addresses if not entered above, formatted as `agentname; phone-number; email@address.com; Full Street Address, with commas, on one line; pronoun or special/pronoun/set`.
+            example: |
+              maryroberts; 917-404-5954; maryr@ourserver.com; 12 Our St, Brooklyn, NY 10344
+              winkykennedy
+            type: textarea
+          hcp_informed:
+            label: Healthcare informed individuals
+            help: |
+              Additional people you authorize to speak to your doctors or access your medical records, plus their home address if not entered above, formatted as `fulltname; Full Street Address`.
+            example: |
+              hollyjones; 967 St Judas Pl, Brooklyn, NY 10344
+              sadyjonesmith; 967 St Judas Pl, Brooklyn, NY 10344
+            type: textarea
+            rows: 2
+          poa_agent_primary:
+            label: Power of attorney, primary agent
+            type: text
+            width: full
+            help: The ID of your *primary agent*, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+          poa_agent_secondary:
+            label: Power of attorney, secondary agent
+            type: text
+            width: full
+            help: The ID of your *secondary agent*, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+
+      fieldset_lwat:
+        legend: Your Last Will and Testament
+        fields:
+
+          fieldset_property:
+            legend: Accounts and Property
+            note: For the fields in this section, be sure to include any information that will aid in locating documents such as titles, deeds, and certificates.
+            fields:
+              real_estate:
+                label: Real estate
+                help: List any real property to which you hold title, including addresses and any notes, such as shared ownership.
+                type: textarea
+              bank_accounts:
+                label: Bank accounts
+                help: List any savings, checking, investment, or other banking accounts. Including the name of the institution and any notes.
+                type: textarea
+              life_insurance:
+                label: Life insurance
+                help: List any life insurance held in your name, including provider and account number.
+                type: textarea
+              retirement:
+                label: Retirement accounts
+                help: List any retirement accounts in your name.
+                type: textarea
+              ip:
+                label: Intellectual property
+                help: List any instances or collections of intellectual property to which you hold interest, along with any notes.
+                type: textarea
+
+          fieldset_distribution:
+            legend: Distribution
+            fields:
+              lwat_estate_recipients:
+                label: Estate portioning
+                rows: 5
+                help: |
+                  Anyone you wish to leave a portion of your estate to, formatted as `fulltname; N%; any notes you wish to add`.
+                example: |
+                  maryroberts; 50%
+                  Sadyjonessmith; 10%
+                  garyjonessmith; 10%
+                  lstergreene; 10%
+                  francescagreene; 10%
+                  southstreetfoodpantry; 10%
+                type: textarea
+              lwat_personality_distribution:
+                label: Personality (possessions) distribution
+                help: |
+                  Think about any special items you would like to give to people. This would include things like your clothes, jewelry, books, pictures, vehicles, musical instruments, or art. People often give special things to individual people, and then provide in their will that the remainder of their stuff (in legalese, their personalty) should be picked over by friends, and that anything remaining shall be sold or should be given to Housing Works or Good Will.
+                example: |
+                  The photo albums to my brother, should he survive me, and should he not survive me, to the Metropolitan Museum of Art. All items remaining after specific distributions are to be divided equally among my surviving relatives as they shall so decide, and if they cannot decide, as my executor shall decide for them. Anything remaining shall be donated to Housing Works.
+                type: textarea
+                rows: 5
+
+          fieldset_trust:
+            legend: Your trust details
+            note: |
+              Because you can also put your assets into trusts using the language of your will, you will have to identify a primary and a successor Trustee who will manage any assets placed in trust for a beneficiary.
+            fields:
+              trustee_primary:
+                label: Primary trustee
+                type: text
+                width: full
+                help: The ID of your *primary trustee*, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+              trustee_secondary:
+                label: Successor trustee
+                type: text
+                width: full
+                help: The ID of your *successor trustee*, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+
+      fieldset_other-wishes:
+        legend: Other wishes
+        style: "margin-bottom: 0"
+        fields:
+          guardianship_orders:
+            label: Guardianship wishes
+            help: |
+              The names and addresses of three people or couples you wish to act as guardian. You can say, for example, that you wish for a sibling and their spouse to act as guardian, but that in the event they are no longer married, you wish only the sibling to act as guardian. You can say that if the children are under a certain age, you wish for one set of people (i.e.: grandparents), but if they are older, you would like a different set of people (i.e. younger people). The format is one person or couple per line, like so: `fullname fullname; any special note or condition`
+            example: |
+              cindyshepherd robshepherd; 13 Stokely Dr, Madison, WI 22333; if they are still together and all kids are under 10 years
+              bobnewhart randyquaid; 14 Junction Way, Boston, MA 23343; if Cindy and Rob are not together or any of the kids have reached 10 years
+              randyquaid; if both couples are broken up, no matter the kids' ages
+            type: textarea
+          organ_donation:
+            type: checkboxes
+            label: Organ donation
+            help: "*I wish for my skin and other organs to be used for:*"
+            helpspot: before
+            options:
+              - emergency transplant
+              - medical education
+              - medical research
+          remains_agent_primary:
+            label: Primary remains agent
+            type: text
+            width: full
+            help: Who you wish to manage your remains, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+          remains_agent_secondary:
+            label: Successor remains agent
+            type: text
+            width: full
+            help: Who you wish to manage your remains if the primary remains agent is unavailable, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+          rites_wishes:
+            label: Funeral rites/wishes
+            help: |
+              Describe any wishes you want to convey to those responsible for your remains. Include anyone you wish to *exclude* from managing these rites or attending events.
+            type: textarea

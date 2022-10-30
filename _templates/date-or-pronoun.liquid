@@ -1,0 +1,12 @@
+{%- assign obj = include.string %}
+{%- if obj contains "-" %}
+{%-   assign type = "date" %}
+{%- elsif obj contains "/" %}
+{%-   assign parts = obj | split: "/" %}
+{%-   if parts[0][0] == 1 or parts[0][0] == 2 or parts[2][0] == 1 or parts[2][0] == 2 %}
+{%-     assign type = "date" %}
+{%-   else %}
+{%-     assign type = "pronouns" %}
+{%- else %}
+{%-   assign type = "pronouns" %}
+{%- endif %}

@@ -1,0 +1,18 @@
+{%- if include.pros contains "/" %}
+  {%- assign pronouns = include.pros | split: "/" %}
+  {%- assign pro_subj = pronouns[0] %}
+  {%- assign pro_obj = pronouns[1] %}
+  {%- assign pro_poss = pronouns[2] | replace: "hers", "her" | replace: "theirs", "their" | replace: "there", "their" | replace: "they're", "their" %}
+{%- elsif include.pros == "she" %}
+  {%- assign pro_subj = "she" %}
+  {%- assign pro_obj = "her" %}
+  {%- assign pro_poss = "her" %}
+{%- elsif include.pros == "he" %}
+  {%- assign pro_subj = "he" %}
+  {%- assign pro_obj = "him" %}
+  {%- assign pro_poss = "his" %}
+{%- elsif include.pros == "they" %}
+  {%- assign pro_subj = "they" %}
+  {%- assign pro_obj = "them" %}
+  {%- assign pro_poss = "their" %}
+{%- endif %}

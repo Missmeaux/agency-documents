@@ -1,0 +1,17 @@
+{%- assign controls = include.controls %}
+{%- assign spot = include.spot %}
+{%- assign placed = "" | split: "," %}
+{%- for control in form.controls %}
+  {%- assign ctrl = control[1] %}
+  {%- if ctrl.spot == spot %}
+    {%- assign placed = placed | push: control %}
+  {%- endif %}
+{%- endfor %}
+{%- if placed.size > 0 %}
+<div class="form-group {{include.class}}">
+  {%- for control in placed %}
+    {%- assign ctrl = control[1] %}
+    <{{ ctrl.kind | default: 'button' }} id="{{ control[0] }}" type="{{ ctrl.type | default: 'submit' }}" class="btn {{ ctrl.class }}">{{ ctrl.text }}</{{ ctrl.kind }}>
+  {%- endfor %}
+</div>
+{%- endif %}

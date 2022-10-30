@@ -1,0 +1,100 @@
+{%- assign field_name = include.field[0] %}
+{%- assign field = include.field[1] %}
+{%- assign defaults = include.defaults %}
+{%- if field.help %}
+  {%- capture help_tag %}
+    <div id="{{ field_name }}HelpBlock" class="form-text text-muted"><p>{{ field.help | asciidocify }}</p></div>
+  {%- endcapture %}
+{%- else %}
+  {%- assign help_tag = "" %}
+{%- endif %}
+{%- if field.example %}
+  {%- capture example_tags %}
+    <div class="bs-example" data-example-id="{{ field_name }}">
+      <code>{{ field.example }}</code>
+    </div>
+  {%- endcapture %}
+{%- else %}
+  {%- assign example_tags = nil %}
+{%- endif %}
+{%- assign default_helpspot_by_type = defaults.input_types[field.type]['helpspot'] %}
+{%- assign default_examplespit_by_type = defaults.input_types[field.type]['examplespot'] %}
+{%- assign helpspot = field.helpspot | default: default_helpspot_by_type | default: defaults.helpspot %}
+{%- assign examplespot = field.examplespot | default: default_examplespit_by_type | default: defaults.examplespot | default: helpspot %}
+{%- case field.type %}
+
+  {%- when "text" %}
+  <div class="form-group">
+    <label for="{{ field_name }}" class="{{ default: defaults.label-col-size | default: 'col-sm-2' }} control-label">{{ field.label | asciidocify }}{% if field.rules.required %}*{% endif %}</label>
+    <div class="{{ default: defaults.input-col-size | default: "col-sm-10" }}">
+      {%- if helpspot == "before" %}{{ help_tag }}{%- endif %}
+      {%- if examplespot == "before" %}{{ example_tags }}{%- endif %}
+      <input id="{{ field_name }}" name="{{ field_name }}" type="text" {% if field.rules.required %}required="required"{% endif %} class="form-control {{ field.class }} input-{{ field.width | default: defaults.input-text-width | default: '10' }}">
+      {%- if helpspot == "after" %}{{ help_tag }}{% endif %}
+      {%- if examplespot == "after" %}{{ example_tags }}{%- endif %}
+    </div>
+  </div>
+
+  {%- when "select" %}
+  <div class="form-group">
+    <label for="{{ field_name }}" class="{{ default: defaults.label-col-size | default: 'col-sm-2' }} control-label">{{ field.label | asciidocify }}{% if field.rules.required %}*{% endif %}</label>
+    {%- if helpspot == "before" %}{{ help_tag }}{%- endif %}
+    {%- if examplespot == "before" %}{{ example_tags }}{%- endif %}
+    <div class="col-sm-10">
+      <select id="{{ field_name }}" name="{{ field_name }}" class="custom-select {{ field.class }}">
+        {%- for option in field.options %}
+          {%- if option.value %}
+            {%- assign option_value = option.value %}
+            {%- assign option_text = option.text | default: option_value %}
+          {%- else %}
+            {%- assign option_value = option %}
+            {%- assign option_text = option %}
+          {%- endif %}
+        <option value="{{ option_value }}">{{ option.text }}</option>
+        {%- endfor %}
+      </select>
+    </div>
+    {%- if helpspot == "after" %}{{ help_tag }}{% endif %}
+    {%- if examplespot == "after" %}{{ example_tags }}{%- endif %}
+  </div>
+
+  {%- when "textarea" %}
+  <div class="form-group">
+    <label for="{{ field_name }}" class="{{ default: defaults.label-col-size | default: 'col-sm-2' }} control-label">{{ field.label | asciidocify }}{% if field.rules.required %}*{% endif %}</label>
+    <div class="col-sm-10" for="{{ field_name }}">
+      {%- if helpspot == "before" %}{{ help_tag }}{%- endif %}
+      {%- if examplespot == "before" %}{{ example_tags }}{%- endif %}
+      <textarea id="{{ field_name }}" name="{{ field_name }}" type="text" aria-describedby="{{ field_name }}HelpBlock" {% if field.rules.required %}required="required"{% endif %} class="form-control {{ field.class }}" rows="{{ field.rows | default: 3 }}"></textarea>
+      {%- if helpspot == "after" %}{{ help_tag }}{% endif %}
+      {%- if examplespot == "after" %}{{ example_tags }}{%- endif %}
+    </div>
+  </div>
+
+  {%- when "checkboxes","radio" %}
+    {%- if field.type == "checkboxes" %}
+      {%- assign option_name = "checkbox" %}
+    {%- else %}
+      {%- assign option_name = "radio" %}
+    {%- endif %}
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ field.label | asciidocify }}{% if field.rules.required %}*{% endif %}</label>
+    <div class="col-sm-10">
+      {%- if helpspot == "before" %}{{ help_tag }}{%- endif %}
+      {%- for option in field.options %}
+      <div class="custom-control custom-{{option_name}} custom-control-inline {{ field.class }}">
+        {%- if option.value %}
+          {%- assign option_value = option.value %}
+          {%- assign option_text = option.text | default: option_value %}
+        {%- else %}
+          {%- assign option_value = option %}
+          {%- assign option_text = option %}
+        {%- endif %}
+        <input name="{{ field_name }}" id="{{ field_name }}_{{ forloop.index }}" type="{{ option_name }}" aria-describedby="{{ field_name }}HelpBlock" class="custom-control-input" value="{{ option_value }}">
+        <label for="l{{ field_name }}_{{ loop.count }}" class="custom-control-label">{{ option_text }}</label>
+      </div>
+      {%- endfor %}
+      {%- if helpspot == "after" %}{{ help_tag }}{% endif %}
+      </div>
+    </div>
+
+{%- endcase %}

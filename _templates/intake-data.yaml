@@ -1,0 +1,154 @@
+{%- if client_pronouns == "other" %}
+{%-   assign client_pronouns == client_pronouns_alt %}
+{%- endif %}
+{%- if client_niblings.trim != "" %}
+{%-   assign niblings = client_niblings | split: "\n" %}
+{%- %}
+{%- endif %}
+name:
+  last: {{ client_name_last }}
+  first: {{ client_name_first }}
+  legal: {{ client_name_legal }}
+{%- if client_aliases.size gt 0 %}
+{%-   aliases = client_aliases | split: "," %}
+  aliases:
+{%-   for alias in aliases %}
+    - {{alias}}
+{%-   endfor %}
+{%- endif %}
+pronouns:
+{%- include pronouns-parser.liquid pros=client_pronouns %}
+  subj: {{ pro_subj }}
+  obj: {{ pro_obj }}
+  poss: {{ pro_poss | replace: "hers", "her" | replace: "theirs", "their" }}
+address:
+  street: {{ client_address_street }}
+  city: {{ client_address_city }}
+  state: {{ client_address_state }}
+  country: {{ client_address_country }}
+  zip: {{ client_address_zip }}
+birth:
+  date: {{ client_birth_date | date: "%Y-%m-%d" }}
+  place: {{ client_birth_place }}
+meta:
+  email: {{ client_email }}
+  phone: {{ client_phone }}
+  ssn: {{ cllient_ssn }}
+{%- if client_siblings.trim != "" %}
+
+# Client's own siblings
+siblings:
+{%-   assign siblings = siblings | split: "\n" %}
+{%-   for sibling in siblings %}
+{%-     assign sib = sibling | split: ";" %}
+{%-     assign sib_name = sib[0] | trim %}
+{%-     assign sib_id = sib_name | remove: " " | remove: "," | remove: "'" | downcase %}
+  - name: {{ sib_name }}
+    id: {{ sib_id }}
+    rel: {{ sib[1] | trim }}
+    birth:
+      date: {{ sib[2] | date: "%Y-%m-%d" }}
+{%-     if nib[3] %}
+{%-       assign nib_pronouns = nib[3] | trim %}
+{%-       include pronouns-parser.liquid pros=nib_pronouns %}
+    pronouns: {subj: {{ pro_subj }}, obj: {{ pro_obj }}, poss: {{ pro_poss | replace: "hers", "her" | replace: "theirs", "their" }}}
+{%-     endif %}
+{%-     assign kids = false %}
+{%-     for nibling in niblings %}
+{%-       if nibling contains sib_id %}
+{%-         assign nib = nibling | split: ";" %}
+{%-         assign nib_name = nib[0] | trim %}
+{%-         assign nib_id = nib_name | remove: " " | remove: "," | remove: "'" | downcase %}
+{%-         unless kids %}
+# Client's niblings
+    kids:
+{%-           assign kids = true %}
+{%-         endunless %}
+      - name: {{ nib_name }}
+        id: {{ nib_id }}
+        rel:
+          client: {{ nib[1] | trim }}
+          parent: {{ nib[2] | trum }}
+{%-         if nib[3] %}
+{%-           assign nib_pronouns = nib[3] | trim %}
+{%-           include pronouns-parser.liquid pros=nib_pronouns %}
+        pronouns: {subj: {{ pro_subj }}, obj: {{ pro_obj }}, poss: {{ pro_poss | replace: "hers", "her" | replace: "theirs", "their" }}}
+{%-         endif %}
+{%-       endif %}
+{%-     endfor %}
+{%-   endfor %}
+{%- endif %}
+{%- if spouses.trim != "" %}
+
+# client's marriages, latest to earliest
+spouses:
+{%-    spouses = spouses | split: "\n" %}
+{%-    for spouse in spouses %}
+{%-      assign sp = spouse | split: ";" %}
+{%-      assign sp_name = sp[0] | trim %}
+{%-      assign sp_id = sp_name | remove: " " | remove: "," | remove: "'" | downcase %}
+  - name: {{ sp_name }}
+    id: {{ sp_id }}
+    rel: {{ sp[1] | trim }}
+    wedding:
+      date: {{ sp[2] | trim | date: "%Y-%m-%d" }}
+{%-      assign sp3 = sp[3] | trim %}
+{%-      include date-or-pronouns.liquid string=sp3 %}
+{%-      if type == "date" %}
+    divorce:
+      date: {{ sp3 | date: "%Y-%m-%d" }}
+{%-      endif %}
+{%-      if type == "pronouns" %}
+{%-        assign sp_pronouns = sp[3] | trim %}
+{%-      elsif sp[4] %}
+{%-        assign sp_pronouns = sp[4] | trim %}
+{%-      endif %}
+{%-      if sp_pronouns %}
+{%-        include pronouns-parser.liquid pros=sp_pronouns %}
+    pronouns: {subj: {{ pro_subj }}, obj: {{ pro_obj }}, poss: {{ pro_poss | replace: "hers", "her" | replace: "theirs", "their" }}}
+{%-      endif %}
+{%-    endfor %}
+{%- endif %}
+
+{%- if children.trim != "" %}
+
+# client's children
+children:
+{%-    children = children | split: "\n" %}
+{%-    for child in children %}
+{%-      assign kid = child | split: ";" %}
+{%-      assign kid_name = kid[0] | trim %}
+{%-      assign kid_id = kid_name | remove: " " | remove: "," | remove: "'" | downcase %}
+  - name: {{ kid_name }}
+    id: {{ kid_id }}
+    rel: {{ kid[1] }}
+    birth:
+      date: {{ kid[2] | trim | date: "%Y-%m-%d" }}
+    with:
+      id: {{ kid[3] }}
+      rel: {{ kid[4] }}
+{%-      if kid[5] %}
+{%-        assign kid_pronouns == kid[5] %}
+{%-        include pronouns-parser.liquid pros=kid_pronouns %}
+    pronouns: {subj: {{ pro_subj }}, obj: {{ pro_obj }}, poss: {{ pro_poss | replace: "hers", "her" | replace: "theirs", "their" }}}
+{%-      endif %}
+{%-    endfor %}
+
+parents:
+  - name: {[ parent_1_name ]}
+    id: {{ parent_1_name | remove: " " | remove: "," | remove: "'" | downcase }}
+    rel: {{ parent_1_rel }}
+{%- if parent_1_name_prev.trim != "" %}
+    formerly: {{ parent_1_name_prev }}
+{%- endif %}
+{%- if parent_1_death.trim != "" %}
+    death:
+      date: {{ parent_1_death | date: "%Y-%m-%d" }}
+{%- endif %}
+{%- if parent_1_spouses.trim != "" %}
+    spouses:
+{%-   for pspouse in parent_1_spouses %}
+      - name: {{ pspouse }}
+        id: {{ pspouse | remove: " " | remove: "," | remove: "'" | downcase }}
+{%-   endfor %}
+{%- endif %}
