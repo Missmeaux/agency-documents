@@ -1,0 +1,17 @@
+firm:
+  name:
+  address:
+    street:
+    city:
+    state:
+    zip:
+    phone:
+  site: https://moatlaw.com
+remote:
+  host: netlify
+  api:
+    access:
+      token: HgMgmsWrzcO0drtdKSV7w0mLOoN1H1f55d2hBKjAFGk
+      auth: https://app.netlify.com/authorize
+    base_url: https://api.netlify.com/api/v1
+    site_id: b053531f-7cf9-4fa1-aa61-b2045c46aa1c
