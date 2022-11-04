@@ -122,7 +122,7 @@ fields:
         rules:
           required: true
           minlength: 20
-        help: The city, state/province, country where you were born, formatted as city, full state name, full country name
+        help: The city, state/province, country where you were born, formatted as city, full state name, and full country name if not the United States
       client_ssn:
         label: Your Social Security number
         rules:
@@ -154,7 +154,10 @@ fields:
 
   fieldset_family:
     legend: Your Affidavit of Family Tree
+    note: |
+      Fill out each set of fields for each side of your family, to the best of your ability. If any of your family is estranged, feel free to say so. The goal is to ensure that a court is able to notify your closest next of kin of any court proceedings involving your estate, so please do not worry overmuch if you do not know the names of your second cousins once removed.
     fields:
+      
 
       fieldset_nuclear:
         legend: Your partners and descendants
@@ -163,7 +166,9 @@ fields:
             type: textarea
             label: Spouses and coparents
             help: |
-              Anyone you ever married _or_ had a child with. One person per line, formatted as `Legal Name; label; date/of/wedding; date/of/divorce; pronoun or special/pronoun/sets`, most recent to earliest. If you never married, include no dates.
+              Anyone you ever married _or_ had a child with. One person per line, formatted as: +
+              `Legal Name; their relationship to you; date/of/wedding; date/of/divorce; pronoun or special/pronoun/sets; any special notes` +
+              most recent to earliest. If you never married, include no dates.
             example: |
               Mary Roberts; wife; 5/22/2022; she
               Holly Jones; ex-wife; 9/5/2014; 2/22/2018; she
@@ -191,51 +196,49 @@ fields:
         fields:
           parents_divorce:
             type: text
-            label: Your parents' divorce date
+            label: (If Applicable) Your parents' divorce year
             width: date
-            help: If applicable, the date your parents officially divorced, as `m/d/yyyy`
+            help: If applicable, the year your parents officially divorced, as `yyyy`
 
           fieldset_parent1:
-            legend: First parent
+            legend: Parent A
             fields:
               parent_1_name:
                 type: text
-                label: First parent's name
+                label: Parent name
                 width: 25
-                help: Your birth mother's or other first parent's current full legeal name.
+                help: Your parent's current full legal name.
               parent_1_rel:
                 type: text
-                label: First parent's relationship to you
-                help: Probably `mother`.
+                label: Parent's relationship to you
+                help: For example `mother`.
               parent_1_name_prev:
                 type: text
-                label: First parent's previous name
-                help: Your birth mother's or other first parent's maiden or previous name, if applicable
+                label: (If applicable) Parent's maiden/previous name
               parent_1_death:
                 type: text
                 width: date
                 rules:
                   date: true
-                label: First parent's date of death
-                help: Your birth mother's or other first parent's date of death, if they have passed
+                label: (If applicable) Parent's year of death
               parent_1_siblings:
                 type: textarea
-                label: Your first parent's siblings
-                help: Your first parent's immediate siblings. One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set`
+                label: Parent's siblings, including adoptive siblings, step-siblings, and half-siblings
+                help: One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set` and, if applicable, `;now deceased`
                 example: |
                   Saul Greeley; 4/30/1965; he
                   Fara Madison; 3/24/1967; she
                   Ray Greeley; 4/14/1977; he
               parent_1_niblings:
                 type: textarea
-                label: Your first parent's niblings
-                help: Your first parent's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; parentname; pronoun or special/pronoun/set`.
+                label: Nieces, nephews, niblings, Parent A side
+                help: Parent A's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; nibling's parentname; pronoun or special/pronoun/set`.
                 example: |
                   Jenny Greeley; 9/19/1990; saulgreeley
                   Charlene Madison, 9/8/1993; faramadison
               parent_1_cousins:
                 type: textarea
-                label: Your first parent's first cousins
+                label: Parent A's first cousins
                 help: Your first parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
                 example: |
                   Rudy Bottoms; 4/30/1975; paternal
@@ -357,28 +360,6 @@ fields:
               Hope Mandel, step neice; daughter; cindymandel
             type: textarea
 
-  fieldset_others:
-    legend: Other individuals not yet listed
-    fields:
-      others_agents:
-        label: Unlisted agents
-        help: |
-          People who will serve as agents who are not already listed, formatted as `Agent Name; relation; phone-number; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set`.
-        example: |
-          Winky Kennedy; dear friend; 917-222-3333; winky@geocities.com; 10 Prospect Pl Apt 5, Brooklyn, New York; she
-          Sherry Coen; business partner; 347-897-3344 or 202-338-3335 ext 45; scoen2012@imac.com; 87 Stanton Rd, Salisbury, Connecticut; they
-          Phyllis Walton; longtime lover; 315-908-3344; phylisw@nowheregood.com; 2033 Cordial Blvd, White Plains, New York; she
-        type: textarea
-      others_recipients:
-        label: Unlisted recipients
-        help: |
-            People (or organizations) to whom you will bequeath something but are not already listed, formatted as `Recipient Name; relation; email@address.com; full street address, with commas, on one line; pronoun or special/pronoun/set`.
-        example: |
-          Seamus Smith; paternal grandfather; no email; c/o Whispy Gardens, 55 Creaky Plaza, Old Towne, NV 89893; he
-          Samuel Dilbert; former step-son by Mary Roberts; no email; Prisoner 48099 c/o DOC San Quentin, CA; he
-          South Street Food Pantry; volunteer gig; info@southstreetpantry.org; 10 South St, Brooklyn, NY 10344
-        type: textarea
-
   fieldset_documents:
     legend: Your document details
     style: "margin-bottom: 0"
@@ -430,6 +411,7 @@ fields:
 
       fieldset_agents:
         legend: Healthcare and legal agents
+        note: You need only provide full name, relationship, and contact information for any given beneficiary or agent once in this form, and thereafter can identify them solely using `firstnamelastname`
         fields:
           hcp_agents:
             label: Healthcare proxy agents
@@ -552,15 +534,20 @@ fields:
               - medical education
               - medical research
           remains_agent_primary:
-            label: Primary remains agent
+            label: Primary agent
             type: text
             width: full
             help: Who you wish to manage your remains, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
           remains_agent_secondary:
-            label: Successor remains agent
+            label: Successor agent
             type: text
             width: full
-            help: Who you wish to manage your remains if the primary remains agent is unavailable, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+            help: Who you wish to manage your remains if the primary agent is unavailable, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.
+          remains_agent_tertiary:
+            label: Successor agent
+            type: text
+            width: full
+            help: Who you wish to manage your remains if the secondary agent is unavailable, plus their email and home addresses if not registered above, in the form of `fullname; email@address.com; Full Street Address`.          
           rites_wishes:
             label: Funeral rites/wishes
             help: |
