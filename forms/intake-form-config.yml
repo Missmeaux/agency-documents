@@ -125,32 +125,36 @@ fields:
         help: The city, state/province, country where you were born, formatted as city, full state name, and full country name if not the United States
       client_ssn:
         label: Your Social Security number
-        rules:
-          required: true
-      client_address_street:
-        label: Street
         type: text
-        width: 25
         rules:
           required: true
-      client_address_city:
-        label: City
-        type: text
-        width: 20
-        rules:
-          required: true
-      client_address_state:
-        label: State or province
-        type: text
-        width: 20
-        rules:
-          required: true
-      client_address_zip:
-        label: Zip or postal code
-        type: text
-        width: 10
-        rules:
-          required: true
+      fieldset_client_address: 
+        legend: Current Address
+        fields:
+          client_address_street:
+            label: Street
+            type: text
+            width: 25
+            rules:
+              required: true
+          client_address_city:
+            label: City
+            type: text
+            width: 20
+            rules:
+              required: true
+          client_address_state:
+            label: State or province
+            type: text
+            width: 20
+            rules:
+              required: true
+          client_address_zip:
+            label: Zip or postal code
+            type: text
+            width: 10
+            rules:
+              required: true
 
   fieldset_family:
     legend: Your Affidavit of Family Tree
@@ -214,7 +218,7 @@ fields:
                 help: For example `mother`.
               parent_1_name_prev:
                 type: text
-                label: (If applicable) Parent's maiden/previous name
+                label: (If applicable) Parent's maiden/previous name, if any
               parent_1_death:
                 type: text
                 width: date
@@ -246,14 +250,14 @@ fields:
                   Sharla Stonk; 4/14/1977; maternal
               parent_1_second_cousins:
                 type: textarea
-                label: Your first parent's second cousins
-                help: Your first parent's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
+                label: Parent A's second cousins
+                help: Parent A's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
                 example: |
                   Georgia Bottoms; 7/21/1990; rudybottoms
                   Charli Bottoms, 9/8/1993; rudybottoms
               parent_1_spouses:
                 type: textarea
-                label: Your first parent's (other) marriages
+                label: Parent A's (other) marriages
                 help: |
                   One spouse per line, formatted as `Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set`, most recent to earliest.
                 example: |
@@ -261,20 +265,20 @@ fields:
                   William Jessup; late husband; death: 4/22/2008; he
 
           fieldset_parent2:
-            legend: Second parent
+            legend: Parent B
             fields:
               parent_2_name:
-                label: Second parent's name
+                label: Parent B's Name
                 type: text
                 width: 25
                 help: |
-                  Your birth father's or other Second parent's current legal name
+                  Parent B's current legal name
               parent_2_rel:
-                label: Second parent's relationship to you
+                label: Parent B's relationship to you
                 type: text
                 help: Probably `father`
               parent_2_name_prev:
-                label: Second parent's previous name
+                label: Parent B's maiden or previous name, if any
                 type: text
                 help: Your second parent's maiden or previous name, if applicable
               parent_2_death:
@@ -283,39 +287,39 @@ fields:
                 width: date
                 rules:
                   date: true
-                help: Your birth father or other second parent's date of death, if they have passed
+                help: Parent B's date of death, if they have passed
               parent_2_siblings:
                 type: textarea
-                label: Your second parent's siblings
-                help: Your second parent's immediate siblings. One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set`
+                label: Parent B's siblings
+                help: Parent B's immediate siblings. One per line, formatted as `Sibling Name; date/of/birth; pronoun or special/pronoun/set`
                 example: |
                   Gary Philips; 4/3/1970; he
                   Roman Philips; 3/28/1971; she
                   Sarah Philips; 5/14/1975; he
               parent_2_niblings:
                 type: textarea
-                label: Your second parent's niblings
-                help: Your second parent's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; parentname; pronoun or special/pronoun/set`.
+                label: Parent B's niblings
+                help: Parent B's siblings' children -- your first cousins on this parent's side -- formatted as `Full Name; date/of/birth; parentname; pronoun or special/pronoun/set`.
                 example: |
                   Cora Grant; garpyphilips
                   Strom Philips, 9/8/1993; faramadison
               parent_1_cousins:
                 type: textarea
-                label: Your second parent's first cousins
-                help: Your second parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
+                label: Parent B's first cousins
+                help: Parent B's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
                 example: |
                   Rudy Bottoms; 4/30/1975; paternal; she
                   Wiley Wilkins; 3/24/1981; paternal; he
                   Sharla Stonk; 4/14/1977; maternal; she
               parent_1_second_cousins:
                 type: textarea
-                label: Your second parent's second cousins
-                help: Your second parent's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
+                label: Parent B's second cousins
+                help: Parent B's first cousins' children, formatted as `Full Name; parentname; pronoun or special/pronoun/set`.
                 example: |
                   Georgia Bottoms; 7/21/1990; rudybottoms; she
                   Charli Bottoms, 9/8/1993; rudybottoms; she
               parent_2_spouses:
-                label: Your second parent's other marriages
+                label: Parent B's other marriages
                 help: |
                   One spouse per line, formatted as `Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set`, most recent to earliest.
                 example: |
