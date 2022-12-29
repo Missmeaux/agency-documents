@@ -232,7 +232,7 @@ fields:
                 example: |
                   Saul Greeley; 4/30/1965; he
                   Fara Madison; 3/24/1967; she
-                  Ray Greeley; 4/14/1977; he
+                  Ray Greeley; 4/14/1977; he; now deceased
               parent_1_niblings:
                 type: textarea
                 label: Nieces, nephews, niblings, Parent A side
@@ -243,11 +243,11 @@ fields:
               parent_1_cousins:
                 type: textarea
                 label: Parent A's first cousins
-                help: Your first parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth; side; pronoun or special/pronoun/set`
+                help: Your first parent's immediate cousins. One per line, formatted as `Cousin Name; date/of/birth (if known); approximate year of death or 'now deceased' if no longer living; side; pronoun or special/pronoun/set`
                 example: |
-                  Rudy Bottoms; 4/30/1975; paternal
-                  Wiley Wilkins; 3/24/1981; paternal
-                  Sharla Stonk; 4/14/1977; maternal
+                  Rudy Bottoms; 4/30/1975; paternal; he/they
+                  Wiley Wilkins; 3/24/1981; paternal; he
+                  Sharla Stonk; 4/14/1977; maternal; zi/ir
               parent_1_second_cousins:
                 type: textarea
                 label: Parent A's second cousins
@@ -276,13 +276,13 @@ fields:
               parent_2_rel:
                 label: Parent B's relationship to you
                 type: text
-                help: Probably `father`
+                help: "example: `father`"
               parent_2_name_prev:
                 label: Parent B's maiden or previous name, if any
                 type: text
                 help: Your second parent's maiden or previous name, if applicable
               parent_2_death:
-                label: Second parent's date of death
+                label: Parent B's date of death, if applicable
                 type: text
                 width: date
                 rules:
@@ -321,7 +321,7 @@ fields:
               parent_2_spouses:
                 label: Parent B's other marriages
                 help: |
-                  One spouse per line, formatted as `Spouse Name; label; divorce: date/of/divorce; death: date of death; pronoun or special/pronoun/set`, most recent to earliest.
+                  One spouse per line, formatted as `Spouse Name; label, e.g. ex-wife, late wife; divorce: approximate date/of/divorce or death: approximate date of death; pronoun or special/pronoun/set`, most recent to earliest.
                 example: |
                   Rhonda Rudolf; current wife; 3/5/2016; she
                   Mable Worcester; ex-wife; 4/22/1978; 9/20/2017; she
@@ -333,7 +333,7 @@ fields:
           siblings:
             label: Your full siblings' info
             help: |
-              Your *siblings by the same parents*. One per line, formatted as `Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set`.
+              *Siblings with whom you share two parents*. One per line, formatted as `Sibling Name; relation; date/of/birth; pronoun or special/pronoun/set`.
             example: |
               Janet Smith; sister; 4/30/1979; they
               Wilson Smith; brother, 12/31/1981
@@ -376,7 +376,7 @@ fields:
           lw_withhold_proecedures:
             type: checkboxes
             label: Withhold and withdraw
-            help: The procedures and treatments you will wish to have withheld or withdrawn
+            help: The procedures and treatments you will wish to have withheld or withdrawn -- check the boxes for interventions you DO NOT want in the event that you are both unable to communicate and actively dying
             helpspot: before
             options:
               - surgery
@@ -392,14 +392,20 @@ fields:
           lw_withhold_notes:
             label: Withholding conditions and notes
             help: |
-                Any special conditions or qualifications for treatments and procedures to be withheld, such as...
+                Any guiding principles, and/or special conditions or qualifications for treatments and procedures to be withheld, such as...
             example: |
+              I believe wisdom is possible at all phases of living and dying, and do not wish to have my life artificially foreshortened.
+              
+              My primary objective is to avoid pain, and therefore I do wish to have administered treatments that will prevent or relieve pain, and I do not wish to have treatments that will prolong my suffering.
+
               I wish for these procedures and treatments ONLY in the event that their temporary administration will facilitate my return to a state in which they are no longer necessary.
 
               I do not want them if their administration will serve only to prolong the process of my dying.
+
+              My health care agent is authorized to keep me artificially alive for no more than seven days to allow my family and loved ones time to travel to see me.
             type: textarea
           lw_doperform:
-            label: DO perform
+            label: Statement of intent to avoid pain, and statement of intent to return home
             type: checkboxes
             help: Any procedures and treatments you will wish to ensure are performed
             options:
@@ -410,7 +416,7 @@ fields:
           lw_other_notes:
             label: Other notes about your wishes
             help: |
-              Any special notes regarding the treatment of your condition when you are unable to carry it out yourself.
+              Any special notes regarding the treatment of your condition when you are unable to carry it out yourself, for example, do you have any specific desires regarding your gender presentation, the pronouns or name by which your care providers should call you, specific notes on the preservation of your dignity, dietary restrictions, modes of dress, the kinds of environmental stimuli you do or do not prefer, or anything else that might become relevant if you are unable to communicate or control your environment.
             type: textarea
 
       fieldset_agents:
@@ -428,7 +434,7 @@ fields:
           hcp_informed:
             label: Healthcare informed individuals
             help: |
-              Additional people you authorize to speak to your doctors or access your medical records, plus their home address if not entered above, formatted as `fulltname; Full Street Address`.
+              Additional people you authorize to speak to your doctors or access your medical records, plus their home address if not entered above, formatted as `fullname; Full Street Address`.
             example: |
               hollyjones; 967 St Judas Pl, Brooklyn, NY 10344
               sadyjonesmith; 967 St Judas Pl, Brooklyn, NY 10344
@@ -522,11 +528,11 @@ fields:
           guardianship_orders:
             label: Guardianship wishes
             help: |
-              The names and addresses of three people or couples you wish to act as guardian. You can say, for example, that you wish for a sibling and their spouse to act as guardian, but that in the event they are no longer married, you wish only the sibling to act as guardian. You can say that if the children are under a certain age, you wish for one set of people (i.e.: grandparents), but if they are older, you would like a different set of people (i.e. younger people). The format is one person or couple per line, like so: `fullname fullname; any special note or condition`
+              The names and addresses of three people or couples you wish to act as guardian. You can say, for example, that you wish for a sibling and their spouse to act as guardian, but that in the event they are no longer married, you wish only the sibling to act as guardian. You can say that if the children are under a certain age, you wish for one set of people (i.e.: grandparents), but if they are older, you would like a different set of people (i.e. younger people). The format is one person or couple per line, like so: `fullname fullname; any special note or condition` You may also add guiding principles or conditions, such as `We wish for our children to remain in the home and to have continuity in their schooling.` You might also add conditions like `Any guardian is to make the children reasonably available to visit with their surviving relatives, except for John Smith, from whom we are intentionally estranged, and anyone who shares John Smith's objectionable values.`
             example: |
               cindyshepherd robshepherd; 13 Stokely Dr, Madison, WI 22333; if they are still together and all kids are under 10 years
               bobnewhart randyquaid; 14 Junction Way, Boston, MA 23343; if Cindy and Rob are not together or any of the kids have reached 10 years
-              randyquaid; if both couples are broken up, no matter the kids' ages
+              randyquaid; if both couples are broken up or one member of either couple have died, no matter the kids' ages
             type: textarea
           organ_donation:
             type: checkboxes
